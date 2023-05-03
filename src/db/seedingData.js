@@ -2,7 +2,7 @@ const userData = [
   {
     name: "Julian",
     username: "jcp215033",
-    password: "abc123",
+    password_hash: "abc123",
     bio: "Co-creator of Beak Talk",
     region: "NY, USA",
     posts_count: 5,
@@ -11,7 +11,7 @@ const userData = [
   {
     name: "Kristen",
     username: "kSantos",
-    password: "password456",
+    password_hash: "password456",
     bio: "Co-creator of Beak Talk",
     region: "NY, USA",
     posts_count: 6,
@@ -20,7 +20,7 @@ const userData = [
   {
     name: "Charlie",
     username: "charRK",
-    password: "ilGattoMangiaLUcello",
+    password_hash: "ilGattoMangiaLUcello",
     bio: "Hates birds",
     region: "NY, USA",
     posts_count: 1,
@@ -29,7 +29,7 @@ const userData = [
 ];
 const postData = [
   {
-    user_id: 1,
+    id: 1,
     species: "capri corgious",
     location: "Nyc",
     date: "05/02/2023",
@@ -39,7 +39,7 @@ const postData = [
     caption: "Caught this one on the way to school",
   },
   {
-    user_id: 2,
+    id: 2,
     species: "corvus labrodous",
     location: "Nyc",
     date: "04/15/2023",
@@ -49,7 +49,7 @@ const postData = [
     caption: "Very noisy, woke me up",
   },
   {
-    user_id: 3,
+    id: 3,
     species: "ucelli chiquas",
     location: "Nyc",
     date: "04/28/2023",
@@ -61,17 +61,17 @@ const postData = [
 ];
 const comms = [
   {
-    user_id: 1,
+    id: 1,
     post_id: 3,
     comment: "Not a real bird",
   },
   {
-    user_id: 2,
+    id: 2,
     post_id: 1,
     comment: "Poorly photoshopped bird",
   },
   {
-    user_id: 3,
+    id: 3,
     post_id: 1,
     comment: "leave this website",
   },

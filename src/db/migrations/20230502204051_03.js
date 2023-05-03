@@ -5,18 +5,18 @@
 exports.up = function (knex) {
   return knex.schema
     .createTable("users", (table) => {
-      table.increments("user_id");
+      table.increments("id");
       table.text("username").unique();
-      table.text("password").notNullable();
-      table.text("name").notNullable();
-      table.text("region").notNullable();
-      table.integer("posts_count").notNullable();
+      table.text("password_hash").notNullable();
+      table.text("name");
+      table.text("region");
+      table.integer("posts_count");
       table.text("pfp");
       table.text("bio");
     })
     .createTable("posts", function (table) {
       table.increments("post_id");
-      table.integer("user_id").references("users.user_id").notNullable();
+      table.integer("id").references("users.id").notNullable();
       table.text("species").notNullable();
       table.text("location").notNullable();
       table.text("date").notNullable();
@@ -27,7 +27,7 @@ exports.up = function (knex) {
     })
     .createTable("comments", function (table) {
       table.increments("comment_id");
-      table.integer("user_id").references("users.user_id").notNullable();
+      table.integer("id").references("users.id").notNullable();
       table.integer("post_id").references("posts.post_id").notNullable();
       table.text("comment").notNullable();
     });

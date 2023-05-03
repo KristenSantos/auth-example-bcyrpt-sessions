@@ -1,0 +1,18 @@
+extends layout
+
+block content
+  h1 #{p.username}
+  p Welcome #{name} from #{p.region}.
+  p Bio: #{p.bio}
+  img(src=p.pfp)
+
+  mixin post-list(post)
+    div
+      h1= post.species
+      p #{post.location}, #{post.date}
+      p Confidence rating of: #{post.rating}/10 (#{post.votes} votes)
+      img(src=post.img_url)
+      p= post.caption
+  
+  for each in po
+    +post-list(each)

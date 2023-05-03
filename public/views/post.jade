@@ -1,0 +1,8 @@
+extends layout
+
+block content
+  h1 #{species}
+  p #{location}, #{date}
+  p Confidence rating of: #{rating}/10 (#{votes} votes)
+  img(src=img_url)
+  p #{caption}
