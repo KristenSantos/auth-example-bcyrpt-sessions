@@ -5,17 +5,17 @@ const handleFetch = async (url, options) => {
     const { status, statusText, ok } = response;
     if (!ok) return [null, { status, statusText }];
 
-    const content = (status === 204) || await response.json();
+    const content = status === 204 || (await response.json());
     return [content, null];
   } catch (error) {
     return [null, error];
   }
 };
 
-const getFetchOptions = (body, method = 'POST') => ({
+const getFetchOptions = (body, method = "POST") => ({
   method,
-  credentials: 'include', // IMPORTANT, this tells fetch to include cookies
-  headers: { 'Content-Type': 'application/json' },
+  credentials: "include", // IMPORTANT, this tells fetch to include cookies
+  headers: { "Content-Type": "application/json" },
   body: JSON.stringify(body),
 });
 
@@ -26,25 +26,40 @@ const signupAndLoginHandler = async (url, form) => {
   const [_response, err] = await handleFetch(url, options);
   if (err) {
     form.reset();
-    return alert('Something went wrong');
+    return alert("Something went wrong");
   }
-  window.location.assign('/user.html');
+  window.location.assign("/user.html");
+};
+
+//CREATE POST
+const newPost = async (url, form) => {
+  const formData = new FormData(form);
+  const options = getFetchOptions(Object.fromEntries(formData.entries()));
+  // console.log(options);
+  const [_response, err] = await handleFetch(url, options);
+  if (err) {
+    form.reset();
+    return alert("Something je?");
+  }
+  window.location.assign(`api/posts/${_response.post_id}`);
 };
 
 // READ USER
 const fetchLoggedInUser = async () => {
-  const [response, _err] = await handleFetch('/api/me', { credentials: 'include' });
+  const [response, _err] = await handleFetch("/api/me", {
+    credentials: "include",
+  });
   return response;
 };
 
 // UPDATE USER
 const updateUsernameHandler = async (form) => {
   const formData = new FormData(form);
-  const username = formData.get('username');
-  if (!username) return alert('Username is required');
+  const username = formData.get("username");
+  if (!username) return alert("Username is required");
 
   const url = `/api/users/${form.dataset.userId}`;
-  const options = getFetchOptions({ username }, 'PATCH');
+  const options = getFetchOptions({ username }, "PATCH");
 
   const [response, err] = await handleFetch(url, options);
   return [response, err];
@@ -52,9 +67,11 @@ const updateUsernameHandler = async (form) => {
 
 // DELETE USER
 const logOutHandler = async () => {
-  const [_response, err] = await handleFetch('/api/users/logout', { method: 'DELETE' });
-  if (err) return alert('Something went wrong');
-  window.location.assign('/');
+  const [_response, err] = await handleFetch("/api/users/logout", {
+    method: "DELETE",
+  });
+  if (err) return alert("Something went wrong");
+  window.location.assign("/");
 };
 
 // Nav Helper
@@ -71,7 +88,7 @@ const setNav = (hasLoggedInUser) => {
   </ul>`;
 
   const navHtml = hasLoggedInUser ? loggedInNavHtml : loggedOutNavHtml;
-  document.querySelector('nav').innerHTML = navHtml;
+  document.querySelector("nav").innerHTML = navHtml;
 };
 
 // This is wonky. Once you learn about bundlers we won't have to
@@ -81,6 +98,7 @@ Object.assign(window, {
   getFetchOptions,
   fetchLoggedInUser,
   signupAndLoginHandler,
+  newPost,
   setNav,
   logOutHandler,
   updateUsernameHandler,
@@ -91,6 +109,7 @@ export {
   getFetchOptions,
   fetchLoggedInUser,
   signupAndLoginHandler,
+  newPost,
   setNav,
   logOutHandler,
   updateUsernameHandler,

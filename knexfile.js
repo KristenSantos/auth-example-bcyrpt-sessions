@@ -7,8 +7,8 @@ module.exports = {
     connection: {
       host: process.env.PG_HOST || "127.0.0.1",
       port: process.env.PG_PORT || 5431,
-      user: process.env.PG_USER || "kristensantos",
-      password: process.env.PG_PASS || "",
+      user: process.env.PG_USER || "postgres",
+      password: process.env.PG_PASS || "postgres",
       database: process.env.PG_DB || "bird",
     },
     migrations: {
@@ -24,8 +24,8 @@ module.exports = {
     connection: {
       host: process.env.PG_HOST || "127.0.0.1",
       port: process.env.PG_PORT || 5431,
-      user: process.env.PG_USER || "kristensantos",
-      password: process.env.PG_PASS || "",
+      user: process.env.PG_USER || "postgres",
+      password: process.env.PG_PASS || "postgres",
       database: process.env.database || "bird",
     },
   },

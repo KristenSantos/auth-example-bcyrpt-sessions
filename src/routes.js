@@ -1,18 +1,11 @@
 const express = require("express");
 const userController = require("./controllers/user");
-// const pagesController = require("./controllers/pages");
+const postController = require("./controllers/post");
 const addModels = require("./middleware/add-models");
 const checkAuthentication = require("./middleware/check-authentication");
-// var path = require("path");
-// var homeRouter = require("./home1"); //*
-// app.use("/", homeRouter); //*
 
 const Router = express.Router();
 Router.use(addModels);
-
-// Router.set("views", path.join(__dirname, "..", "public", "views"));
-// app.set("views", path.join(__dirname, "..", "public", "views"));
-// app.set("view engine", "jade");
 
 Router.get("/cookieCounter", (req, res) => {
   const { session } = req;
@@ -24,14 +17,16 @@ Router.get("/cookieCounter", (req, res) => {
 
 // Create
 Router.post("/users", userController.create);
-Router.post("/users/login", userController.login);  
-Router.post("/posts",userController.create)
+Router.post("/users/login", userController.login);
+Router.post("/posts", postController.create);
 
 // Read
 Router.get("/users", userController.list);
 Router.get("/users/:id", userController.show);
 Router.get("/me", userController.showMe);
-Router.get("/posts/:id", userController.show)
+Router.get("/home", postController.showHome);
+Router.get("/posts/:id", postController.showPost);
+Router.get("/profile/:id", postController.showMe);
 
 // checkAuthentication middleware is applied to only to this route (and /logged-in-secret)
 Router.get("/logged-in-secret", checkAuthentication, (req, res) => {
