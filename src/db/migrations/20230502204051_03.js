@@ -19,9 +19,9 @@ exports.up = function (knex) {
       table.integer("id").references("users.id").notNullable();
       table.text("species").notNullable();
       table.text("location").notNullable();
-      table.text("date").notNullable();
-      table.float("rating").notNullable();
-      table.integer("votes").notNullable();
+      table.text("date")
+      table.float("rating")
+      table.integer("votes")
       table.text("img_url").notNullable();
       table.text("caption");
     })

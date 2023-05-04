@@ -1,5 +1,5 @@
-const knex = require('../knex');
-const authUtils = require('../../utils/auth-utils');
+const knex = require("../knex");
+const authUtils = require("../../utils/auth-utils");
 
 class User {
   #passwordHash = null;
@@ -8,15 +8,17 @@ class User {
   // to provide the controller with instances that
   // have access to the instance methods isValidPassword
   // and update.
-  constructor({ id, username, password_hash }) {
+  constructor({ id, username, password_hash, region, bio }) {
     this.id = id;
     this.username = username;
+    this.region = region;
+    this.bio = bio;
     this.#passwordHash = password_hash;
   }
 
   static async list() {
     try {
-      const query = 'SELECT * FROM users';
+      const query = "SELECT * FROM users";
       const { rows } = await knex.raw(query);
       return rows.map((user) => new User(user));
     } catch (err) {
@@ -27,8 +29,11 @@ class User {
 
   static async find(id) {
     try {
-      const query = 'SELECT * FROM users WHERE id = ?';
-      const { rows: [user] } = await knex.raw(query, [id]);
+      const query = "SELECT * FROM users WHERE id = ?";
+      const {
+        rows: [user],
+      } = await knex.raw(query, [id]);
+      console.log(user);
       return user ? new User(user) : null;
     } catch (err) {
       console.error(err);
@@ -38,8 +43,10 @@ class User {
 
   static async findByUsername(username) {
     try {
-      const query = 'SELECT * FROM users WHERE username = ?';
-      const { rows: [user] } = await knex.raw(query, [username]);
+      const query = "SELECT * FROM users WHERE username = ?";
+      const {
+        rows: [user],
+      } = await knex.raw(query, [username]);
       return user ? new User(user) : null;
     } catch (err) {
       console.error(err);
@@ -47,13 +54,15 @@ class User {
     }
   }
 
-  static async create(username, password) {
+  static async create(username, password, name, region, bio) {
     try {
       const passwordHash = await authUtils.hashPassword(password);
 
-      const query = `INSERT INTO users (username, password_hash)
-        VALUES (?, ?) RETURNING *`;
-      const { rows: [user] } = await knex.raw(query, [username, passwordHash]);
+      const query = `INSERT INTO users (username, password_hash, name, region, bio)
+        VALUES (?, ?, ?, ?, ?) RETURNING *`;
+      const {
+        rows: [user],
+      } = await knex.raw(query, [username, passwordHash, name, region, bio]);
       return new User(user);
     } catch (err) {
       console.error(err);
@@ -63,19 +72,20 @@ class User {
 
   static async deleteAll() {
     try {
-      return knex.raw('TRUNCATE users;');
+      return knex.raw("TRUNCATE users;");
     } catch (err) {
       console.error(err);
       return null;
     }
   }
 
-  update = async (username) => { // dynamic queries are easier if you add more properties
+  update = async (username) => {
+    // dynamic queries are easier if you add more properties
     try {
-      const [updatedUser] = await knex('users')
+      const [updatedUser] = await knex("users")
         .where({ id: this.id })
         .update({ username })
-        .returning('*');
+        .returning("*");
       return updatedUser ? new User(updatedUser) : null;
     } catch (err) {
       console.error(err);
@@ -83,9 +93,8 @@ class User {
     }
   };
 
-  isValidPassword = async (password) => (
-    authUtils.isValidPassword(password, this.#passwordHash)
-  );
+  isValidPassword = async (password) =>
+    authUtils.isValidPassword(password, this.#passwordHash);
 }
 
 module.exports = User;
